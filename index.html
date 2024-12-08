@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #ecf0f1;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        header {
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(52, 73, 94, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        header input[type="text"] {
+            width: 50%;
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        header select {
+            margin-left: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            background-color: #1abc9c;
+            color: #fff;
+        }
+
+        .dark-mode {
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+            color: #2c3e50;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .movie-list {
+            list-style: none;
+            padding: 0;
+            display: block;
+        }
+
+        .movie-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            margin: 10px 0;
+            background-color: #3b5998;
+            border-radius: 10px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .movie-list li:hover {
+            background-color: #1abc9c;
+            transform: scale(1.05);
+        }
+
+        .movie-list li img {
+            width: 50px;
+            height: 75px;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+        .movie-details img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .movie-details {
+            display: none;
+            background-color: #3b5998;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .rating {
+            font-size: 20px;
+            color: gold;
+            margin-top: 10px;
+        }
+
+        .movie-details button {
+            background-color: #1abc9c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .movie-details button:hover {
+            background-color: #16a085;
+        }
+
+        .toggle-dark-mode {
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            background: #ecf0f1;
+            color: #34495e;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Movie Search</h1>
+    <input type="text" id="search-bar" placeholder="Search for a movie..." onkeyup="searchMovies()">
+    <select id="genre-filter" onchange="filterByGenre()">
+        <option value="all">All Genres</option>
+        <option value="action">Action</option>
+        <option value="comedy">Comedy</option>
+        <option value="horror">Horror</option>
+    </select>
+    <button class="toggle-dark-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+</header>
+
+<div class="container">
+    <ul class="movie-list" id="movie-list">
+        <li data-genre="action">
+            <img src="https://via.placeholder.com/50x75" alt="Movie 1">
+            <a onclick="showDetails('movie1')">Movie 1</a>
+        </li>
+        <li data-genre="comedy">
+            <img src="https://via.placeholder.com/50x75" alt="Movie 2">
+            <a onclick="showDetails('movie2')">Movie 2</a>
+        </li>
+        <li data-genre="horror">
+            <img src="https://via.placeholder.com/50x75" alt="Movie 3">
+            <a onclick="showDetails('movie3')">Movie 3</a>
+        </li>
+    </ul>
+
+    <!-- Hidden Movie Details -->
+    <div id="movie1" class="movie-details">
+        <img src="https://via.placeholder.com/400x300" alt="Movie 1">
+        <h2>Movie 1</h2>
+        <p><strong>Genre:</strong> Action</p>
+        <p><strong>Rating:</strong> ★★★★☆</p>
+        <p><strong>Release Date:</strong> 2024-01-01</p>
+        <p><strong>Description:</strong> An action-packed thriller with an amazing storyline.</p>
+        <button onclick="redirectToDownload('https://example.com/download/movie1')">Download Movie</button>
+    </div>
+
+    <div id="movie2" class="movie-details">
+        <img src="https://via.placeholder.com/400x300" alt="Movie 2">
+        <h2>Movie 2</h2>
+        <p><strong>Genre:</strong> Comedy</p>
+        <p><strong>Rating:</strong> ★★★☆☆</p>
+        <p><strong>Release Date:</strong> 2023-12-25</p>
+        <p><strong>Description:</strong> A light-hearted comedy for the whole family.</p>
+        <button onclick="redirectToDownload('https://example.com/download/movie2')">Download Movie</button>
+    </div>
+
+    <div id="movie3" class="movie-details">
+        <img src="https://via.placeholder.com/400x300" alt="Movie 3">
+        <h2>Movie 3</h2>
+        <p><strong>Genre:</strong> Horror</p>
+        <p><strong>Rating:</strong> ★★★★★</p>
+        <p><strong>Release Date:</strong> 2024-02-14</p>
+        <p><strong>Description:</strong> A spine-chilling horror movie that will keep you on edge.</p>
+        <button onclick="redirectToDownload('https://example.com/download/movie3')">Download Movie</button>
+    </div>
+</div>
+
+<script>
+    function searchMovies() {
+        const query = document.getElementById("search-bar").value.toLowerCase();
+        const movies = document.querySelectorAll(".movie-list li");
+
+        movies.forEach(movie => {
+            const movieName = movie.querySelector("a").textContent.toLowerCase();
+            movie.style.display = movieName.includes(query) ? "flex" : "none";
+        });
+    }
+
+    function showDetails(movieId) {
+        document.querySelectorAll(".movie-details").forEach(detail => detail.style.display = "none");
+        document.getElementById(movieId).style.display = "block";
+    }
+
+    function redirectToDownload(url) {
+        window.location.href = url;
+    }
+
+    function filterByGenre() {
+        const genre = document.getElementById("genre-filter").value;
+        const movies = document.querySelectorAll(".movie-list li");
+
+        movies.forEach(movie => {
+            movie.style.display = (genre === "all" || movie.dataset.genre === genre) ? "flex" : "none";
+        });
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+    }
+</script>
+
+</body>
+</html>
